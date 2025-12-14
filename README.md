@@ -1,2 +1,4 @@
 # Meus-Projetos
-O meu objetivo com esse repositório praticar e armazenar os códigos em python. EX: Plotar gráficos, testar métodos numéricos e o que mais for interessante estudar!
+📌Bem-vindo(a) ao meu arsenal de códigos! 💻
+Este repositório é o checkpoint da minha evolução 🚀
+O objetivo é treinar, testar e salvar tudo que possa ser útil na ciência e engenharia.⚙️
