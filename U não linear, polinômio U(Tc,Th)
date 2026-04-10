@@ -1,0 +1,35 @@
+import numpy as np
+
+Tc = np.array([59, 69, 79, 89, 99, 59, 59, 59, 59, 59, 59])
+Th = np.array([140, 140, 140, 140, 140, 100, 110, 120, 130, 150, 160])
+U  = np.array([145.85, 147.23, 148.95, 150.09, 151.22, 132.08, 135.66, 139.28, 142.73, 149.17, 152.56])
+
+X = np.column_stack([
+    np.ones(len(Tc)),
+    Tc,
+    Th,
+    Tc**2,
+    Th**2,
+    Tc*Th
+])
+
+coef = np.linalg.lstsq(X, U, rcond=None)[0]
+print(coef)
+
+#def predizer_U(tc, th, coef):
+ #   return coef[0] + coef[1]*tc + coef[2]*th + coef[3]*(tc**2) + coef[4]*(th**2) + coef[5]*(tc*th)
+ # Exemplo: Tc=70, Th=145
+#u_predito = predizer_U(70, 145, coef)
+#print(f"U predito: {u_predito}")
+# Print formatado
+nomes = ["Intercepto", "Tc", "Th", "Tc^2", "Th^2", "Tc*Th"]
+print("--- Coeficientes do Modelo ---")
+for nome, c in zip(nomes, coef):
+    print(f"{nome:12}: {c:14.8f}")
+    # Cálculo do R²
+U_pred = X @ coef
+ss_res = np.sum((U - U_pred)**2)
+ss_tot = np.sum((U - np.mean(U))**2)
+r_squared = 1 - (ss_res / ss_tot)
+print("-" * 30)
+print(f"R² do ajuste: {r_squared:.4f}")
