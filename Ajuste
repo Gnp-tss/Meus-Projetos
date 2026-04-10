@@ -1,0 +1,46 @@
+import numpy as np
+from scipy.interpolate import interp1d
+from sklearn.metrics import r2_score
+import matplotlib.pyplot as plt
+################################################## Regressão Polinomial ######################################################################
+
+# Coeficientes = [ a, b, c, d, e, f, g ] para um polinômio a*x**6 + b*x**5 + c*x**4 + d*x**3 + e*x**2 + f*x + g
+x=np.array([1, 2, 3, 4, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 20, 21])
+y=np.array([145.3333333, 145.3333333, 145.5, 145.5, 148.3333333, 149.3333333, 151.1666667, 153.8333333, 156.1666667, 158, 159.8333333, 161, 162.5, 164.5, 167.6666667, 169.6666667, 171.1666667, 173.3333333, 174.8333333, 176, 177.3333333, 180.3333333, 181.3333333, 182.8333333, 183.8333333, 184.5, 185.6666667, 185.8333333, 186.5, 187.8333333, 187.6666667, 187.8333333, 187.6666667, 187.6666667, 187.6666667])
+coefs = np.polyfit(x, y, deg=6)
+a, b, c, d, e, f, g = coefs
+print("########Regressão########")
+print(f"Formula f(x): {a:.4e}*x^6 + {b:.4e}*x^5  {c:.4e}*x^4 + {d:.4e}*x^3 + {e:.4e}*x^2 + {f:.4e}*x + {g:.4e}")
+polinomio = np.poly1d(coefs)
+y_previsto = polinomio(x)
+y_media = np.mean(y)
+
+# Residuo(R^2): 1 - SSres/SStotal
+# Soma do quadrado dos residuos (SSRes):
+SS_res= np.sum(((y-y_previsto)**2))
+
+# Soma total dos quadrados (SStotal):
+SS_total= np.sum((y - y_media)**2)
+
+# Residuo:
+r_squared = 1 - (SS_res/SS_total)
+print(f" R^2 = {r_squared}" )
+
+##################################################
+# --- GERAÇÃO DO GRÁFICO ---
+
+# Criar uma linha suave para a curva (100 pontos entre o min e max de x)
+x_suave = np.linspace(x.min(), x.max(), 100)
+y_suave = polinomio(x_suave)
+
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, color='red', label='Dados Originais', s=30) # Pontos reais
+plt.plot(x_suave, y_suave, color='blue', label=f'Regressão (Grau 6) - R²: {r_squared:.4f}') # Curva
+
+plt.title('Regressão Polinomial')
+plt.xlabel('Eixo X')
+plt.ylabel('Eixo Y')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.7)
+
+plt.show()
