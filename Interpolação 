@@ -1,0 +1,31 @@
+import numpy as np
+import sympy as sp
+import matplotlib.pyplot as plt
+
+x_vals = [3, 4, 5, 6,7,8]
+y_vals = [170, 171.5, 172.3, 177.4, 178.2, 180.6]
+x = sp.Symbol("x")
+
+polinomio = sp.interpolating_poly(len(x_vals), x, x_vals, y_vals)
+
+print("Polinômio Interpolador:")
+display(polinomio.expand())
+
+# Gráfico
+f = sp.lambdify(x, polinomio, "numpy")
+x_plot = np.linspace(min(x_vals) - 1, max(x_vals) + 1, 200)
+y_plot = f(x_plot)
+
+# Plotagem
+plt.figure(figsize=(7, 5))
+plt.plot(x_plot, y_plot, label="Polinômio interpolador", color="blue")
+plt.scatter(x_vals, y_vals, color="red", label="Pontos dados")
+
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Interpolação Polinomial")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
